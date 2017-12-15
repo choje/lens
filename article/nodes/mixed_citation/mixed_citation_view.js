@@ -50,6 +50,7 @@ MixedCitationView.Prototype = function () {
                             xref.innerHTML = text[i].innerHTML;
                             xref.setAttribute("href", href.textContent);
                         }
+                        xref.setAttribute("target","_blank");
 
                         frag.appendChild(xref);
 

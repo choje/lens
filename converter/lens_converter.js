@@ -611,6 +611,17 @@ NlmToLensConverter.Prototype = function () {
         var doc = state.doc;
         var onBehalfOf = contribGroup.querySelector("on-behalf-of");
         if (onBehalfOf) doc.on_behalf_of = onBehalfOf.textContent.trim();
+
+
+        var nodes = [];
+
+        var heading, body;
+
+        // Decision letter (if available)
+        // -----------
+
+
+
         return contribGrp;
     };
 
@@ -749,6 +760,7 @@ NlmToLensConverter.Prototype = function () {
         }
         if (contrib.getAttribute("contrib-type") === "section-author") {
             doc.nodes.document.authors.push(id);
+            console.log(doc.nodes.document);
         }
 
         doc.create(contribNode);
@@ -1603,11 +1615,14 @@ NlmToLensConverter.Prototype = function () {
 
         if (!title) {
             console.error("FIXME: every section should have a title", this.toHtml(section));
+
+
         }
         // Recursive Descent: get all section body nodes
         nodes = nodes.concat(this.bodyNodes(state, children, {
             ignore: ["title", "label", "sec-meta"]
         }));
+
 
         if (nodes.length > 0 && title) {
             var id = state.nextId("heading");
@@ -1618,6 +1633,7 @@ NlmToLensConverter.Prototype = function () {
                 level: state.sectionLevel,
                 content: title ? this.annotatedText(state, title, [id, 'content']) : ""
             };
+
 
             if (label) {
                 heading.label = label.textContent;
@@ -1630,8 +1646,32 @@ NlmToLensConverter.Prototype = function () {
             console.info("NOTE: skipping section without content:", title ? title.innerHTML : "no title");
         }
 
+
+        if (state.sectionLevel===2)
+        {
+            var contribGroup = this.contribGroup(state, section);
+            var contribs='';
+            for (var i =0; i< contribGroup.length;i++){
+                         contribs += contribGroup[i].name;
+            }
+
+
+            if (contribGroup) {
+                var heading2 = {
+                    id: Math.floor((1 + Math.random()) * 0x10000).toString(16),
+                    type: "heading",
+                    level: state.sectionLevel,
+                    content: contribs
+                };
+                doc.create(heading2);
+                nodes.push(heading2);
+
+
+            }
+        }
         // popping the section level
         state.sectionLevel--;
+
         return nodes;
     };
 
@@ -1640,7 +1680,6 @@ NlmToLensConverter.Prototype = function () {
         "supplementary-material": true,
         "fig": true,
         "fig-group": true,
-        //"table-wrap": true,
         "media": true,
 
     };
