@@ -24,7 +24,7 @@ TOCView.Prototype = function() {
   this.render = function() {
     var lastLevel = -1;
     var tocNodes = this.doc.getTocNodes();
-    console.log(tocNodes);
+
     // don't render if only 2 sections
 
     var backLinkContainer = document.createElement('div');
@@ -56,6 +56,7 @@ TOCView.Prototype = function() {
         $el.addClass('level-' + level);
         $el.click(_.bind(this.onClick, this, node.id));
         this.el.appendChild(el);
+
 
       }
     }, this);

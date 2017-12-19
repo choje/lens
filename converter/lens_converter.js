@@ -613,13 +613,8 @@ NlmToLensConverter.Prototype = function () {
         if (onBehalfOf) doc.on_behalf_of = onBehalfOf.textContent.trim();
 
 
-        var nodes = [];
-
-        var heading, body;
-
         // Decision letter (if available)
         // -----------
-
 
 
         return contribGrp;
@@ -760,7 +755,6 @@ NlmToLensConverter.Prototype = function () {
         }
         if (contrib.getAttribute("contrib-type") === "section-author") {
             doc.nodes.document.authors.push(id);
-            console.log(doc.nodes.document);
         }
 
         doc.create(contribNode);
@@ -1327,8 +1321,10 @@ NlmToLensConverter.Prototype = function () {
             child.innerHTML = ' ';
         }
         var node = this.paragraphGroup(state, child);
-        node[0].attributes = child.attributes;
-        return node;
+        if (node[0] !== undefined) {
+            node[0].attributes = child.attributes;
+            return node;
+        }
     };
     this._bodyNodes["sec"] = function (state, child) {
         return this.section(state, child);
@@ -1623,7 +1619,6 @@ NlmToLensConverter.Prototype = function () {
             ignore: ["title", "label", "sec-meta"]
         }));
 
-
         if (nodes.length > 0 && title) {
             var id = state.nextId("heading");
             var heading = {
@@ -1631,9 +1626,19 @@ NlmToLensConverter.Prototype = function () {
                 source_id: section.getAttribute("id"),
                 type: "heading",
                 level: state.sectionLevel,
-                content: title ? this.annotatedText(state, title, [id, 'content']) : ""
-            };
+                content: title ? this.annotatedText(state, title, [id, 'content']) : "",
+                authors: []
 
+            };
+            if (heading.content.length >1) {
+                var sec =this.selectDirectChildren(section, 'sec-meta')[0];
+                if (sec !== undefined) {
+                    heading.authors = this.contribGroup(state, sec);
+                }
+
+            }
+            console.log(JSON.stringify(heading));
+            console.log(children);
 
             if (label) {
                 heading.label = label.textContent;
@@ -1647,28 +1652,6 @@ NlmToLensConverter.Prototype = function () {
         }
 
 
-        if (state.sectionLevel===2)
-        {
-            var contribGroup = this.contribGroup(state, section);
-            var contribs='';
-            for (var i =0; i< contribGroup.length;i++){
-                         contribs += contribGroup[i].name;
-            }
-
-
-            if (contribGroup) {
-                var heading2 = {
-                    id: Math.floor((1 + Math.random()) * 0x10000).toString(16),
-                    type: "heading",
-                    level: state.sectionLevel,
-                    content: contribs
-                };
-                doc.create(heading2);
-                nodes.push(heading2);
-
-
-            }
-        }
         // popping the section level
         state.sectionLevel--;
 

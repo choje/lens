@@ -43,6 +43,24 @@ HeadingView.Prototype = function () {
         var titleEl = $$('span');
         this.renderAnnotatedText([this.node.id, 'content'], titleEl);
         el.appendChild(titleEl);
+        if (this.node.authors !== undefined) {
+            if (this.node.authors.length > 0) {
+                var authors = $$('div');
+                var $authors = $(authors);
+                $authors.addClass('authors');
+                for (var i = 0; i < this.node.authors.length; i++) {
+                    var authorsEl = document.createElement('span');
+                    var $authorsEl = $(authorsEl);
+                    $authorsEl.addClass('author');
+                    authorsEl.appendChild(document.createTextNode(this.node.authors[i].name));
+                    authors.appendChild(authorsEl);
+                    el.appendChild(authors);
+                }
+            }
+        }
+
+
+
         return el;
     };
 

@@ -4,8 +4,8 @@ var Document = require('../../../substance/document');
 var DocumentNode = Document.Node;
 var Text = require("../text/text_node");
 
-var Heading = function(node, document) {
-  Text.call(this, node, document);
+var Heading = function (node, document) {
+    Text.call(this, node, document);
 };
 
 // Type definition
@@ -13,14 +13,15 @@ var Heading = function(node, document) {
 //
 
 Heading.type = {
-  "id": "heading",
-  "parent": "content",
-  "properties": {
-    "source_id": "string",
-    "content": "string",
-    "label": "string",
-    "level": "number"
-  }
+    "id": "heading",
+    "parent": "content",
+    "properties": {
+        "source_id": "string",
+        "content": "string",
+        "label": "string",
+        "level": "number",
+        "authors": ["array", "string"]
+    }
 };
 
 // Example Heading
@@ -28,10 +29,10 @@ Heading.type = {
 //
 
 Heading.example = {
-  "type": "heading",
-  "id": "heading_1",
-  "content": "Introduction",
-  "level": 1
+    "type": "heading",
+    "id": "heading_1",
+    "content": "Introduction",
+    "level": 1
 };
 
 // This is used for the auto-generated docs
@@ -40,30 +41,30 @@ Heading.example = {
 
 
 Heading.description = {
-  "name": "Heading",
-  "remarks": [
-    "Denotes a section or sub section in your article."
-  ],
-  "properties": {
-    "content": "Heading title",
-    "label": "Heading label",
-    "level": "Heading level. Ranges from 1..4"
-  }
+    "name": "Heading",
+    "remarks": [
+        "Denotes a section or sub section in your article."
+    ],
+    "properties": {
+        "content": "Heading title",
+        "label": "Heading label",
+        "level": "Heading level. Ranges from 1..4"
+    }
 };
 
-Heading.Prototype = function() {
+Heading.Prototype = function () {
 
-  this.splitInto = 'paragraph';
+    this.splitInto = 'paragraph';
 
-  // TOC API
+    // TOC API
 
-  this.includeInToc = function() {
-    return true;
-  };
+    this.includeInToc = function () {
+        return true;
+    };
 
-  this.getLevel = function() {
-    return this.level;
-  }
+    this.getLevel = function () {
+        return this.level;
+    }
 
 };
 
