@@ -55,7 +55,7 @@ LensView.Prototype = function() {
   };
 
   this.startLoading = function(msg) {
-    if (!msg) msg = "Loading article";
+    if (!msg) msg = "Loading";
     $('.spinner-wrapper .message').html(msg);
     $('body').addClass('loading');
   };
@@ -116,7 +116,7 @@ LensView.Prototype = function() {
     this.el.appendChild($$('.spinner-wrapper', {
       children: [
         $$('.spinner'),
-        $$('.message', {html: 'Loading article'})
+        $$('.message', {html: 'Loading'})
       ]
     }));
 

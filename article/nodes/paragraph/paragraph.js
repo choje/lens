@@ -14,7 +14,9 @@ Paragraph.type = {
   "parent": "content",
   "properties": {
     "children": ["array", "content"]
-  }
+  },
+   "attributes":"object"
+
 };
 
 // This is used for the auto-generated docs

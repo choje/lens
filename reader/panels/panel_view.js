@@ -26,6 +26,7 @@ var PanelView = function(panelController, config) {
     this.$el.addClass('resource-view');
   }
 
+
   // Events
 
   this._onToggle = _.bind( this.onToggle, this );

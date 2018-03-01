@@ -1734,15 +1734,21 @@ NlmToLensConverter.Prototype = function () {
         var blocks = this.segmentParagraphElements(paragraph);
         for (var i = 0; i < blocks.length; i++) {
             var block = blocks[i];
+
+
             var node;
             if (block.handler === "paragraph") {
                 node = this.paragraph(state, block.nodes);
-                if (node) node.source_id = paragraph.getAttribute("id");
+                if (node) {
+                    node.source_id = paragraph.getAttribute("id");
+                    node.attributes = paragraph.attributes;
+                };
             } else {
                 node = this[block.handler](state, block.node);
             }
             if (node) nodes.push(node);
         }
+
         return nodes;
     };
 

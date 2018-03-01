@@ -21,7 +21,7 @@ Quote.type = {
   "properties": {
     "source_id": "string",
     "label": "string",
-    "children": ["array", "paragraph"]
+    "children": ["array", "object"]
   }
 };
 

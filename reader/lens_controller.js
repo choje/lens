@@ -127,7 +127,7 @@ LensController.Prototype = function() {
       var doc = this.Article.describe();
       that.createReader(doc, state);
     } else {
-      this.trigger("loading:started", "Loading article");
+      this.trigger("loading:started", "Loading");
       $.get(this.config.document_url)
       .done(function(data) {
         var doc;

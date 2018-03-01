@@ -6,15 +6,29 @@ var TextPropertyView = require("../text/text_property_view");
 // Substance.Node.View
 // -----------------
 
-var NodeView = function(node, viewFactory, options) {
-  View.call(this, options);
-  this.node = node;
-  this.viewFactory = viewFactory;
-  if (!viewFactory) {
-    throw new Error('Illegal argument. Argument "viewFactory" is mandatory.');
-  }
-  this.$el.addClass('content-node').addClass(node.type.replace('_', '-'));
-  this.el.dataset.id = this.node.id;
+var NodeView = function (node, viewFactory, options) {
+    View.call(this, options);
+    this.node = node;
+    this.viewFactory = viewFactory;
+    if (!viewFactory) {
+        throw new Error('Illegal argument. Argument "viewFactory" is mandatory.');
+    }
+
+    this.$el.addClass('content-node').addClass(node.type.replace('_', '-'));
+    if (node.type == 'paragraph') {
+        if (node.properties.attributes !== undefined) {
+            var attrs = node.properties.attributes;
+            if (attrs.length > 0) {
+                for (var i = 0; i < attrs.length; i++) {
+                    var attr = attrs[i];
+                    if (attr.name === 'content-type') {
+                        this.$el.addClass(attr.value);
+                    }
+                }
+            }
+        }
+    }
+    this.el.dataset.id = this.node.id;
 };
 
 NodeView.Prototype = function() {
