@@ -15,7 +15,9 @@ var NodeView = function (node, viewFactory, options) {
     }
 
     this.$el.addClass('content-node').addClass(node.type.replace('_', '-'));
-    if (node.type == 'paragraph') {
+    // content-type handling for paragraph
+    this.el.dataset.id = this.node.id;
+    if (node.type === 'paragraph') {
         if (node.properties.attributes !== undefined) {
             var attrs = node.properties.attributes;
             if (attrs.length > 0) {
@@ -28,7 +30,7 @@ var NodeView = function (node, viewFactory, options) {
             }
         }
     }
-    this.el.dataset.id = this.node.id;
+
 };
 
 NodeView.Prototype = function() {
