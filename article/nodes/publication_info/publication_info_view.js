@@ -11,7 +11,7 @@ var _labels = {
   "corrected": "corrected",
   "rev-recd": "revised",
   "rev-request": "returned for modification",
-  "published": "published",
+  "published": "Published",
   "default": "updated",
 };
 
@@ -166,7 +166,7 @@ PublicationInfoView.Prototype = function() {
     // 'This article was accepted on 06.05.2014, and published on 11. Oct. 2014'
 
     if (dateEntries.length > 0) {
-      datesEl.appendChild(document.createTextNode("The article was "));
+      datesEl.appendChild(document.createTextNode(""));
       for (i = 0; i < dateEntries.length; i++) {
         // conjunction with ', ' or ', and'
         if (i > 0) {

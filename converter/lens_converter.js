@@ -204,6 +204,12 @@ NlmToLensConverter.Prototype = function () {
         return res.join("-");
     };
 
+    this.extractURLSuffix = function (url) {
+        var url = url.replace("https://doi.org/", "");
+
+        return url;
+    }
+
     this.extractPublicationInfo = function (state, article) {
         var doc = state.doc;
 
@@ -237,7 +243,7 @@ NlmToLensConverter.Prototype = function () {
             "published_on": this.extractDate(pubDate),
             "journal": journalTitle ? journalTitle.textContent : "",
             "related_article": relatedArticle ? relatedArticle.getAttribute("xlink:href") : "",
-            "doi": articleDOI ? articleDOI.textContent : "",
+            "doi": articleDOI ? this.extractURLSuffix(articleDOI.textContent) : "",
             "article_info": articleInfo.id,
             // TODO: 'article_type' should not be optional; we need to find a good default implementation
             "article_type": "",
@@ -418,7 +424,7 @@ NlmToLensConverter.Prototype = function () {
                 });
             }, this);
         }
-
+        //console.log('ack',nodes);
         return nodes;
     };
 
@@ -616,7 +622,7 @@ NlmToLensConverter.Prototype = function () {
         // Decision letter (if available)
         // -----------
 
-
+        //console.log(contribGrp);
         return contribGrp;
     };
 
@@ -1355,6 +1361,7 @@ NlmToLensConverter.Prototype = function () {
     this._bodyNodes["abstract"] = function (state, child) {
         return this._abstract(state, child);
     };
+
     this._bodyNodes["contrib-group"] = function (state, child) {
         return this.contribGroup(state, child);
     };
@@ -1403,8 +1410,6 @@ NlmToLensConverter.Prototype = function () {
                             doc.create(authorsPara);
                             secNode.authors.push(authorsPara.id);
                             doc.create(anno);
-
-
                         }
                     }, this);
 
@@ -1623,7 +1628,20 @@ NlmToLensConverter.Prototype = function () {
             if (heading.content.length > 1) {
                 var sec = this.selectDirectChildren(section, 'sec-meta')[0];
                 if (sec !== undefined) {
-                    heading.authors = this.contribGroup(state, sec);
+                    var contribGroup = sec.querySelector("contrib-group");
+                    var contribs = contribGroup.querySelectorAll("contrib");
+                    for (var i = 0; i < contribs.length; i++) {
+                        var nameEl = contribs[i].querySelector("name");
+                        if (nameEl) {
+                            var name = this.getName(nameEl);
+                            heading.authors.push(name);
+                        }
+
+
+                    }
+
+
+
                 }
 
             }
@@ -1643,7 +1661,7 @@ NlmToLensConverter.Prototype = function () {
 
         // popping the section level
         state.sectionLevel--;
-        console.log("sec", nodes);
+        //console.log("sec", nodes);
         return nodes;
     };
 
@@ -1959,7 +1977,7 @@ NlmToLensConverter.Prototype = function () {
         var url = mediaEl ? mediaEl.getAttribute("xlink:href") : null;
         var doi = supplement.querySelector("object-id[pub-id-type='doi']");
         //doi = doi ? "http://dx.doi.org/" + doi.textContent : "";
-        doi = doi ? doi.textContent : "";
+        doi = doi ?  doi.textContent : "";
 
         //create supplement node using file ids
         var supplementNode = {
@@ -2076,6 +2094,7 @@ NlmToLensConverter.Prototype = function () {
     };
 
     this.tableWrap = function (state, tableWrap) {
+
         var doc = state.doc;
         var label = tableWrap.querySelector("label");
         var table = tableWrap.querySelector("table");
@@ -2089,23 +2108,31 @@ NlmToLensConverter.Prototype = function () {
             var _tds = _trs[i].children;
             for (var j = 0; j < _tds.length; j++) {
                 var childNodes = _tds[j].childNodes;
+
                 for (var k = 0; k < childNodes.length; k++) {
                     var child = childNodes[k];
+                    tds[k] ={}
                     if (child.nodeName === '#text') {
                         var textCotent = child.data.trim();
                         if (textCotent.length > 0) {
                             var p = document.createElement('p');
                             var t = document.createTextNode(textCotent);
                             p.appendChild(t);
-                            tds[k] = this.paragraphGroup(state, p);
+                            tds[k].nodes = this.paragraphGroup(state, p);
                         }
                     }
+
                     else if (child.nodeName === 'p') {
-                        tds[k] = this.paragraphGroup(state, child);
+
+                        tds[k].nodes = this.paragraphGroup(state, child);
+
+
                     }
                     else {
-                        console.error(child, ' not allowed in table');
+                        console.error(' element not allowed in table', child);
                     }
+                    tds[k].attributes = _tds[j].attributes;
+
                 }
                 trs[j] = tds;
                 tds = {};
@@ -2115,6 +2142,7 @@ NlmToLensConverter.Prototype = function () {
 
         }
 
+
         var tableNode = {
             "id": state.nextId("html_table"),
             "source_id": tableWrap.getAttribute("id"),
@@ -2122,11 +2150,11 @@ NlmToLensConverter.Prototype = function () {
             "title": "",
             "label": label ? label.textContent : "Table",
             "children": content,
+            "html_table_attributes": table.attributes,
             "caption": null,
             footers: [],
-            // doi: "" needed?
-        };
 
+        };
 
 
         this.extractTableCaption(state, tableNode, tableWrap);
@@ -2245,7 +2273,7 @@ NlmToLensConverter.Prototype = function () {
     };
 
     this.footnote = function (state, fn, footnote) {
-        console.log('calling footnode', footnote);
+        //console.log('calling footnode', footnote);
         var doc = state.doc;
         var footnoteNode;
         var i, j, k;
@@ -2291,7 +2319,7 @@ NlmToLensConverter.Prototype = function () {
                 }
             }
         }
-        //console.log('foonote blocks', blocks);
+        ////console.log('foonote blocks', blocks);
         footnoteNode.text = blocks;
         doc.create(footnoteNode);
         doc.show("footnotes", id);
@@ -2444,8 +2472,9 @@ NlmToLensConverter.Prototype = function () {
             if (label) citationNode.label = label.textContent;
 
             var doi = citation.querySelector("pub-id[pub-id-type='doi'], ext-link[ext-link-type='doi']");
+
             //if (doi) citationNode.doi = "http://dx.doi.org/" + doi.textContent;
-            if (doi) citationNode.doi = doi.textContent;
+            if (doi) citationNode.doi =  doi.textContent;
         } else {
             var blocks = this.segmentParagraphElements(citation);
             var i, j;

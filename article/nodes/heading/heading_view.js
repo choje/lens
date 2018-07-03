@@ -52,7 +52,7 @@ HeadingView.Prototype = function () {
                     var authorsEl = document.createElement('span');
                     var $authorsEl = $(authorsEl);
                     $authorsEl.addClass('author');
-                    authorsEl.appendChild(document.createTextNode(this.node.authors[i].name));
+                    authorsEl.appendChild(document.createTextNode(this.node.authors[i]));
                     authors.appendChild(authorsEl);
                     el.appendChild(authors);
                 }

@@ -20,9 +20,10 @@ HTMLTable.type = {
     "properties": {
         "source_id": "string",
         "label": "string",
-        "children": ["array", "paragraph"],
+        "children": "object",
         "footers": ["array", "string"],
-        "caption": "caption"
+        "caption": "caption",
+        "html_table_attributes":"object"
     }
 };
 
@@ -31,9 +32,7 @@ HTMLTable.config = {
 };
 
 
-// This is used for the auto-generated docs
-// -----------------
-//
+
 
 HTMLTable.description = {
     "name": "HTMLTable",
@@ -44,9 +43,10 @@ HTMLTable.description = {
         "source_id": "string",
         "label": "Label shown in the resource header.",
         "title": "Full table title",
-        "content": "HTML data",
+        "children": "object",
         "footers": "HTMLTable footers expressed as an array strings",
-        "caption": "References a caption node, that has all the content"
+        "caption": "References a caption node, that has all the content",
+        "html_table_attributes": "Named Node map of attributes"
     }
 };
 
@@ -60,10 +60,11 @@ HTMLTable.example = {
     "type": "html_table",
     "label": "HTMLTable 1.",
     "title": "Lorem ipsum table",
-    "content": "<table>...</table>",
+    "children": "object",
     "footers": [],
     "caption": "caption_1"
 };
+
 
 HTMLTable.Prototype = function () {
     this.getChildrenIds = function () {
