@@ -55,8 +55,17 @@ CitationView.Prototype = function () {
                     div.appendChild(xref);
 
                 }
+                else if (text[j].tagName == 'xref' && text[j].getAttribute('ref-type') === "bibr") {
+                    xref = document.createElement("a");
+                    xref.className = "annotation citation_reference resource-reference";
+                    xref.setAttribute("data-id", text[j].target);
+                    xref.innerHTML = text[j].innerHTML;
+                    div.appendChild(xref);
+
+                }
                 else {
                     if (text[j].tagName == 'ext-link') {
+
                         xref = document.createElement("a");
                         xref.className = "content-node link";
                         xref.setAttribute("href", text[j]);

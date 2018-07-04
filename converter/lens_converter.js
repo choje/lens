@@ -2321,6 +2321,7 @@ NlmToLensConverter.Prototype = function () {
         }
         ////console.log('foonote blocks', blocks);
         footnoteNode.text = blocks;
+        console.log("fn",footnoteNode);
         doc.create(footnoteNode);
         doc.show("footnotes", id);
         return footnoteNode;
