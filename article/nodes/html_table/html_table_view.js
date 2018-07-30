@@ -19,10 +19,8 @@ HTMLTableView.Prototype = function () {
         htmlTable = document.createElement('table');
         var attrs = this.node.properties.html_table_attributes;
         if (attrs.length > 0) {
-
             for (var k=0; k < attrs.length; k++) {
                 htmlTable.setAttribute(attrs[k].nodeName, attrs[k].nodeValue);
-
             }
         }
 

@@ -1001,6 +1001,7 @@ NlmToLensConverter.Prototype = function () {
 
         //Extact Footnotes
         this.extractFootnotes(state, article);
+        //console.log("article", state);
 
 
     };
@@ -1085,7 +1086,7 @@ NlmToLensConverter.Prototype = function () {
         // Globally query all figure-ish content, <fig>, <supplementary-material>, <table-wrap>, <media video>
         // mimetype="video"
         var body = xmlDoc.querySelector("body");
-        var figureElements = body.querySelectorAll("fig, table-wrap, supplementary-material, media[mimetype=video]");
+        var figureElements = body.querySelectorAll("fig, table-wrap, supplementary-material, media[mimetype=video], media[mimetype=audio]");
         var nodes = [];
         for (var i = 0; i < figureElements.length; i++) {
             var figEl = figureElements[i];
@@ -1100,7 +1101,8 @@ NlmToLensConverter.Prototype = function () {
             //    node = this.tableWrap(state, figEl)};
             else if (type === "media") {
                 node = this.video(state, figEl);
-            } else if (type === "supplementary-material") {
+            }
+            else if (type === "supplementary-material") {
                 node = this.supplement(state, figEl);
             }
             if (node) {
@@ -2155,12 +2157,13 @@ NlmToLensConverter.Prototype = function () {
             footers: [],
 
         };
-
+       // TODO table node:
 
         this.extractTableCaption(state, tableNode, tableWrap);
 
         this.enhanceTable(state, tableNode, tableWrap);
         doc.create(tableNode);
+
         return tableNode;
     };
 
@@ -2259,6 +2262,7 @@ NlmToLensConverter.Prototype = function () {
             var child = children[i];
             var type = util.dom.getNodeType(child);
             var nodes = this.paragraph(state, fn, child);
+         //   console.log('converte fn',fn);
             /**
              if (this.rererenceTypes[type]) {
 
@@ -2311,8 +2315,11 @@ NlmToLensConverter.Prototype = function () {
             var block = blocks[i];
             for (j = 0; j < block.nodes.length; j++) {
                 if (block.nodes[j].tagName == 'xref') {
+                    //console.log("block", block);
                     var sourceId = block.nodes[j].getAttribute("rid");
+                    //console.log("sourceId",sourceId);
                     var targetNode = state.doc.getNodeBySourceId(sourceId);
+                    //console.log("targetNode",targetNode);
                     if (targetNode !== undefined) {
                         block.nodes[j].target = targetNode.properties.id;
                     }
@@ -2321,7 +2328,7 @@ NlmToLensConverter.Prototype = function () {
         }
         ////console.log('foonote blocks', blocks);
         footnoteNode.text = blocks;
-        console.log("fn",footnoteNode);
+        //console.log("fn",footnoteNode);
         doc.create(footnoteNode);
         doc.show("footnotes", id);
         return footnoteNode;
@@ -2505,7 +2512,7 @@ NlmToLensConverter.Prototype = function () {
 
 
         }
-
+        //console.log("citationNode", citationNode);
         doc.create(citationNode);
         doc.show("citations", id);
 
@@ -2566,13 +2573,14 @@ NlmToLensConverter.Prototype = function () {
             anno.target = formula.id;
         }
     };
-
     this.addAnnotationDataForXref = function (state, anno, el) {
+
         var refType = el.getAttribute("ref-type");
         var sourceId = el.getAttribute("rid");
 
         // Default reference is a cross_reference
         anno.type = this._refTypeMapping[refType] || "cross_reference";
+        //console.log("anno",anno);
         if (sourceId) anno.target = sourceId;
     };
 

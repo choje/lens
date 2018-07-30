@@ -135,7 +135,7 @@ ReaderView.Prototype = function () {
             });
         }
 
-        console.log(getAllMethods(E));
+        //console.log(getAllMethods(E));
 
     /**
         $(".scrollbar-cover").draggable({
