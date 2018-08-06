@@ -24,9 +24,10 @@ HTMLTableView.Prototype = function () {
             }
         }
 
-        else {
-            htmlTable.setAttribute('class', 'daten-tabelle');
+        if (attrs.getNamedItem('specific-use')===null) {
+            htmlTable.setAttribute('class', 'layout-tabelle');
         }
+
         var tr, i, j, k;
         var rows = this.node.getChildrenIds();
 

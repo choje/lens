@@ -56,13 +56,8 @@ CitationView.Prototype = function () {
 
                 }
                 else if (text[j].tagName == 'xref' && text[j].getAttribute('ref-type') === "bibr") {
-                    //console.log('data',text[j]);
                     xref = document.createElement("a");
-                    xref.className = "annotation citation_reference resource-reference";
-                    xref.setAttribute("data-id", text[j].target.replace('article_citation','citation_reference'));
-                    //console.log("fn ref",text[j].target);
-                    //xref.setAttribute("data-id", "citation_reference_1");
-
+                    xref.setAttribute("href", '#citations/'+text[j].target);
                     xref.innerHTML = text[j].innerHTML;
                     div.appendChild(xref);
 
