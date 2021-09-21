@@ -1,17 +1,6 @@
 {
   "_from": "github:withanage/lens",
   "_id": "lens@2.1.0",
-  "_inBundle": false,
-  "_location": "/lens",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "github:withanage/lens",
-    "rawSpec": "github:withanage/lens",
-    "saveSpec": "github:withanage/lens",
-    "fetchSpec": null,
-    "gitCommittish": null
-  },
   "_requiredBy": [
     "#USER",
     "/"
