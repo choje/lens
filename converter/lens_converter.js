@@ -2832,7 +2832,7 @@ NlmToLensConverter.prototype.constructor = NlmToLensConverter;
 // NlmToLensConverter.DefaultConfiguration = DefaultConfiguration;
 
 NlmToLensConverter.DefaultOptions = {
-  TRIM_WHITESPACES: true,
+  TRIM_WHITESPACES: false,
   REMOVE_INNER_WS: true
 };
 
