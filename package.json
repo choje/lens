@@ -16,14 +16,12 @@
     "#USER",
     "/"
   ],
-  "_resolved": "github:withanage/lens#32fdd8451d4fc910862cacc69826685bf0cd3581",
-  "_spec": "github:withanage/lens",
-  "_where": "/home/wit/projects/UBHD-Lens",
+  "_spec": "github:choje/lens",
   "author": {
     "name": "Michael Aufreiter"
   },
   "bugs": {
-    "url": "https://github.com/elifesciences/lens/issues"
+    "url": "https://github.com/choje/lens/issues"
   },
   "bundleDependencies": false,
   "contributors": [
@@ -80,8 +78,8 @@
   "name": "lens",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elifesciences/lens.git"
+    "url": "https://github.com/choje/lens"
   },
-  "url": "https://github.com/elifesciences/lens",
-  "version": "2.1.0"
+  "url": "https://github.com/choje/lens",
+  "version": "2.1.1"
 }
