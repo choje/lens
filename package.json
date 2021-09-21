@@ -1,10 +1,4 @@
 {
-  "_from": "github:withanage/lens",
-  "_id": "lens@2.1.0",
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
   "_spec": "github:choje/lens",
   "author": {
     "name": "Michael Aufreiter"
