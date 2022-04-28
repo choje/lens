@@ -2340,7 +2340,7 @@ NlmToLensConverter.Prototype = function() {
     // HACK: we try to create a 'articleCitation' when there is structured
     // content (ATM, when personGroup is present)
     // Otherwise we create a mixed-citation taking the plain text content of the element
-    if (personGroup || true) {
+    if (personGroup) {
 
       citationNode = {
         "id": id,
@@ -2385,7 +2385,7 @@ NlmToLensConverter.Prototype = function() {
           if (source) {
             citationNode.title = this.annotatedText(state, source, [id, 'title']);
           } else {
-            console.warn("FIXME: this citation has no title", citation);
+            console.warn("FIXMEPLEASE: this citation has no title", citation);
           }
         }
       }

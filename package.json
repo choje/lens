@@ -34,7 +34,7 @@
     }
   ],
   "dependencies": {
-    "underscore": "1.8.3"
+    "underscore": "^1.13.2"
   },
   "deprecated": false,
   "description": "A novel way of seeing content.",
@@ -42,9 +42,9 @@
     "browserify": "^17.0.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "method-override": "^3.0.0",
-    "node-sass": "^6.0.1"
+    "node-sass": "^7.0.1"
   },
   "engines": {
     "node": ">=0.8.x",
